@@ -1,5 +1,6 @@
 package com.example.android.personalkasappv2;
 
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -16,6 +17,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.example.android.personalkasappv2.dbHelper.Config;
 import com.example.android.personalkasappv2.dbHelper.SqliteHelper;
 
 import org.json.JSONException;
@@ -67,8 +69,9 @@ public class AddActivity extends AppCompatActivity {
                             Toast.LENGTH_LONG).show();
                 }else{
                     queryMysql();
+                    finish();
                 }
-                }
+            }
         });
 
         btn_simpan.setOnClickListener(new View.OnClickListener() {
@@ -95,7 +98,7 @@ public class AddActivity extends AppCompatActivity {
     }
 
     private void queryMysql(){
-        AndroidNetworking.post("http://192.168.1.7/personalkasv2/create.php")
+        AndroidNetworking.post(Config.HOST+"create.php")
                 .addBodyParameter("status", status)
                 .addBodyParameter("jumlah", et_jumlah.getText().toString())
                 .addBodyParameter("keterangan", et_keterangan.getText().toString())
@@ -107,8 +110,8 @@ public class AddActivity extends AppCompatActivity {
                         // do anything with response
                         try {
                             if (response.getString("response").equals("success")){
-                                Toast.makeText(AddActivity.this, "Data transaksi berhasil disimpan",
-                                Toast.LENGTH_LONG).show();
+                                //startActivity(new Intent(AddActivity.this,MainActivity.class));
+                                Toast.makeText(AddActivity.this, "Data transaksi berhasil disimpan", Toast.LENGTH_LONG).show();
                                 finish();
                             }else {
                                 Toast.makeText(AddActivity.this, response.getString("response"),
@@ -125,7 +128,7 @@ public class AddActivity extends AppCompatActivity {
                 });
     }
 
-    private void querySQLite(){
+    private void _createSQLite(){
         SQLiteDatabase database = sqliteHelper.getWritableDatabase();
         database.execSQL(
                 "INSERT INTO transaksi(status, jumlah, keterangan) VALUES('" + status +
