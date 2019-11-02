@@ -45,6 +45,14 @@
         android:text="28 Juni 2017"
         android:textSize="12sp"/>
 
+    <TextView
+        android:id="@+id/txt_tanggal_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="28 Juni 2017"
+        android:textSize="12sp"
+        android:visibility="gone"/>
+
 
 
 </LinearLayout>
