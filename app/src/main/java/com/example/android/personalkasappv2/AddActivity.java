@@ -69,6 +69,7 @@ public class AddActivity extends AppCompatActivity {
                             Toast.LENGTH_LONG).show();
                 }else{
                     queryMysql();
+                    _createSQLite();
                     finish();
                 }
             }
