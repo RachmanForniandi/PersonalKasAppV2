@@ -1,5 +1,6 @@
 package com.example.android.personalkasappv2;
 
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -12,7 +13,15 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.andexert.library.RippleView;
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.common.Priority;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.example.android.personalkasappv2.dbHelper.Config;
 import com.example.android.personalkasappv2.dbHelper.SqliteHelper;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class AddActivity extends AppCompatActivity {
 
@@ -59,16 +68,11 @@ public class AddActivity extends AppCompatActivity {
                     Toast.makeText(AddActivity.this, "Isi data dengan benar",
                             Toast.LENGTH_LONG).show();
                 }else{
-                    SQLiteDatabase database = sqliteHelper.getWritableDatabase();
-                        database.execSQL(
-                                "INSERT INTO transaksi(status, jumlah, keterangan) VALUES('" + status +
-                                        "','"+ et_jumlah.getText().toString() + "','" + et_keterangan.getText().toString() + "')"
-                        );
-                    Toast.makeText(AddActivity.this, "Data transaksi berhasil disimpan",
-                            Toast.LENGTH_LONG).show();
+                    queryMysql();
+                    _createSQLite();
                     finish();
-                    }
                 }
+            }
         });
 
         btn_simpan.setOnClickListener(new View.OnClickListener() {
@@ -87,13 +91,52 @@ public class AddActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    private void insertMysql(){
-
-    }
     //ketika icon back diclick
     @Override
     public boolean onSupportNavigateUp(){
         finish();
         return true;
+    }
+
+    private void queryMysql(){
+        AndroidNetworking.post(Config.HOST+"create.php")
+                .addBodyParameter("status", status)
+                .addBodyParameter("jumlah", et_jumlah.getText().toString())
+                .addBodyParameter("keterangan", et_keterangan.getText().toString())
+                .setPriority(Priority.MEDIUM)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // do anything with response
+                        try {
+                            if (response.getString("response").equals("success")){
+                                //startActivity(new Intent(AddActivity.this,MainActivity.class));
+                                Toast.makeText(AddActivity.this, "Data transaksi berhasil disimpan", Toast.LENGTH_LONG).show();
+                                finish();
+                            }else {
+                                Toast.makeText(AddActivity.this, response.getString("response"),
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    public void onError(ANError error) {
+                        // handle error
+                    }
+                });
+    }
+
+    private void _createSQLite(){
+        SQLiteDatabase database = sqliteHelper.getWritableDatabase();
+        database.execSQL(
+                "INSERT INTO transaksi(status, jumlah, keterangan) VALUES('" + status +
+                        "','"+ et_jumlah.getText().toString() + "','" + et_keterangan.getText().toString() + "')"
+        );
+        Toast.makeText(AddActivity.this, "Data transaksi berhasil disimpan",
+                Toast.LENGTH_LONG).show();
+        finish();
     }
 }
