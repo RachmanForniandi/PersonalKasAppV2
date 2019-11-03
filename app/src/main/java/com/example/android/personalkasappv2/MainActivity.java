@@ -51,10 +51,9 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<HashMap<String, String>> arraykas = new ArrayList<>();
 
     public static TextView txt_filter;
-    public static String transaksi_id, tgl_dari, tgl_ke;
+    public static String transaksi_id, tgl_dari, tgl_ke,status,keterangan, jumlah,tanggal,tanggal2,linkFilter;
 
-    //utk edit
-    public static String status,keterangan, jumlah,tanggal,tanggal2;
+
     public static boolean filter;
 
     @Override
@@ -88,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
                                 "(SELECT SUM(jumlah) FROM transaksi WHERE status='KELUAR')as keluar FROM transaksi";
 
                 //KasAdapter();
+                linkFilter = Config.HOST+"read.php";
                 readQueryMySql();
             }
         });
@@ -126,8 +126,13 @@ public class MainActivity extends AppCompatActivity {
                     "(SELECT SUM(jumlah) FROM transaksi WHERE status='MASUK' AND (tanggal >= '"+ tgl_dari +"') AND (tanggal <= '"+ tgl_ke +"'))," +
                     "(SELECT SUM(jumlah) FROM transaksi WHERE status='KELUAR' AND (tanggal >= '"+ tgl_dari +"') AND (tanggal <= '"+ tgl_ke +"'))" +
                     "FROM transaksi WHERE (tanggal >= '"+ tgl_dari +"') AND (tanggal <= '"+ tgl_ke +"')";
+
+            linkFilter = Config.HOST+"filter.php?dari="+tgl_dari+"&ke="+tgl_ke;
+        }else{
+            linkFilter = Config.HOST+"read.php";
         }
         //KasAdapter();
+
         readQueryMySql();
     }
 
@@ -136,7 +141,9 @@ public class MainActivity extends AppCompatActivity {
         swipe_refresh.setRefreshing(false);
         arraykas.clear();
         list_anggaran.setAdapter(null);
-        AndroidNetworking.post(Config.HOST+"read.php")
+        Log.d("testLink",linkFilter);
+        //AndroidNetworking.post(Config.HOST+"read.php")
+        AndroidNetworking.post(linkFilter)
                 .setPriority(Priority.MEDIUM)
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
