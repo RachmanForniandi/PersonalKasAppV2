@@ -28,29 +28,29 @@
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/txt_masuk"
+                android:id="@+id/txt_masuk_main"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="100000"
+                android:text="0"
                 android:textSize="16dp"
                 android:textStyle="bold"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/txt_masuk"
+                android:layout_below="@+id/txt_masuk_main"
                 android:text="OUTCOME"
                 android:textSize="16dp"
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/txt_keluar"
+                android:id="@+id/txt_keluar_main"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/txt_masuk"
+                android:layout_below="@+id/txt_masuk_main"
                 android:layout_alignParentRight="true"
-                android:text="100000"
+                android:text="0"
                 android:textSize="16dp"
                 android:textStyle="bold"/>
 
@@ -58,7 +58,7 @@
                 android:id="@+id/view"
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:layout_below="@+id/txt_keluar"
+                android:layout_below="@+id/txt_keluar_main"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:background="#BDBDBD"/>
@@ -73,13 +73,13 @@
                 android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/txt_saldo"
+                android:id="@+id/txt_saldo_main"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_below="@+id/view"
                 android:layout_alignParentRight="true"
-                android:text="100000"
+                android:text="0"
                 android:textSize="16dp"
                 android:textStyle="bold"/>
             <TextView
@@ -87,7 +87,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_below="@+id/txt_saldo"
+                android:layout_below="@+id/txt_saldo_main"
                 android:layout_alignParentRight="true"
                 android:text="SEMUA"
                 android:textAlignment="center"/>
