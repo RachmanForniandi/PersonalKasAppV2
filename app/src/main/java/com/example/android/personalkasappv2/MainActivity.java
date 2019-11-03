@@ -28,6 +28,7 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.example.android.personalkasappv2.dbHelper.Config;
 import com.example.android.personalkasappv2.dbHelper.SqliteHelper;
+import com.leavjenn.smoothdaterangepicker.date.SmoothDateRangePickerFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -89,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 //KasAdapter();
                 linkFilter = Config.HOST+"read.php";
                 readQueryMySql();
+                txt_filter.setText("SEMUA");
             }
         });
 
@@ -405,10 +407,36 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_filter) {
-            startActivity(new Intent(MainActivity.this, FilterActivity.class));
+            //startActivity(new Intent(MainActivity.this, FilterActivity.class));
+            filterDataMysql();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void filterDataMysql(){
+        SmoothDateRangePickerFragment smoothDateRangePickerFragment = SmoothDateRangePickerFragment.newInstance(
+                new SmoothDateRangePickerFragment.OnDateRangeSetListener() {
+                    @Override
+                    public void onDateRangeSet(SmoothDateRangePickerFragment view,
+                                               int yearStart, int monthStart,
+                                               int dayStart, int yearEnd,
+                                               int monthEnd, int dayEnd) {
+                        // grab the date range, do what you want
+                        tgl_dari = String.valueOf(yearStart)+ "-" + (monthStart+1)+ "-" + dayStart;
+                        Log.d("_DARI_",tgl_dari );
+
+                        tgl_ke = yearEnd+ "-" + (monthEnd+1) + "-" + dayEnd;
+                        Log.d("_KE_" , tgl_ke);
+
+                        txt_filter.setText(dayStart + "/" + (monthStart+1) + "/" + yearStart + " - " + dayEnd + "/" + (monthEnd+1) + "/" + yearEnd );
+
+                        linkFilter = Config.HOST+"filter.php?dari="+tgl_dari+"&ke="+tgl_ke;
+                        readQueryMySql();
+                    }
+                });
+
+        smoothDateRangePickerFragment.show(getFragmentManager(), "smoothDateRangePicker");
     }
 }
