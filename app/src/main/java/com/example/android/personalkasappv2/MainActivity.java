@@ -26,8 +26,11 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.example.android.personalkasappv2.activities.AddActivity;
+import com.example.android.personalkasappv2.activities.EditActivity;
 import com.example.android.personalkasappv2.dbHelper.Config;
 import com.example.android.personalkasappv2.dbHelper.SqliteHelper;
+import com.leavjenn.smoothdaterangepicker.date.SmoothDateRangePickerFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,19 +41,26 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView txt_masuk, txt_keluar, txt_saldo;
-    ListView list_anggaran;
-    SwipeRefreshLayout swipe_refresh;
+    @BindView(R.id.txt_masuk_main) TextView txt_masuk;
+    @BindView(R.id.txt_keluar_main) TextView txt_keluar;
+    @BindView(R.id.txt_saldo_main) TextView txt_saldo;
+    @BindView(R.id.txt_filter)
+    public TextView txt_filter;
+    @BindView(R.id.list_anggaran) ListView list_anggaran;
+    @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipe_refresh;
     String query_kas, query_total;
     SqliteHelper sqliteHelper;
     Cursor cursor;
 
     ArrayList<HashMap<String, String>> arraykas = new ArrayList<>();
 
-    public static TextView txt_filter;
+
     public static String transaksi_id, tgl_dari, tgl_ke,status,keterangan, jumlah,tanggal,tanggal2,linkFilter;
 
 
@@ -61,20 +71,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
         transaksi_id = ""; tgl_dari=""; tgl_ke="";
         filter = false;
 
-        txt_masuk  =(TextView)findViewById(R.id.txt_masuk_main);
-        txt_keluar =(TextView)findViewById(R.id.txt_keluar_main);
-        txt_saldo  =(TextView)findViewById(R.id.txt_saldo_main);
-
-        list_anggaran =(ListView)findViewById(R.id.list_anggaran);
-
-        swipe_refresh = (SwipeRefreshLayout)findViewById(R.id.swipe_refresh);
-
-        txt_filter =(TextView)findViewById(R.id.txt_filter);
 
         swipe_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -89,17 +91,19 @@ public class MainActivity extends AppCompatActivity {
                 //KasAdapter();
                 linkFilter = Config.HOST+"read.php";
                 readQueryMySql();
+                txt_filter.setText("SEMUA");
             }
         });
 
         sqliteHelper = new SqliteHelper(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //intent ke AddActivity dgn bentuk lain
-                startActivity(new Intent(MainActivity.this, AddActivity.class));
+                startActivity(new Intent(MainActivity.this, TabActivity.class));
 
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
@@ -288,6 +292,7 @@ public class MainActivity extends AppCompatActivity {
         TextView txt_hapus = (TextView)dialog.findViewById(R.id.txt_hapus);
         dialog.show();
 
+
         txt_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -405,10 +410,36 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_filter) {
-            startActivity(new Intent(MainActivity.this, FilterActivity.class));
+            //startActivity(new Intent(MainActivity.this, FilterActivity.class));
+            filterDataMysql();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void filterDataMysql(){
+        SmoothDateRangePickerFragment smoothDateRangePickerFragment = SmoothDateRangePickerFragment.newInstance(
+                new SmoothDateRangePickerFragment.OnDateRangeSetListener() {
+                    @Override
+                    public void onDateRangeSet(SmoothDateRangePickerFragment view,
+                                               int yearStart, int monthStart,
+                                               int dayStart, int yearEnd,
+                                               int monthEnd, int dayEnd) {
+                        // grab the date range, do what you want
+                        tgl_dari = String.valueOf(yearStart)+ "-" + (monthStart+1)+ "-" + dayStart;
+                        Log.d("_DARI_",tgl_dari );
+
+                        tgl_ke = yearEnd+ "-" + (monthEnd+1) + "-" + dayEnd;
+                        Log.d("_KE_" , tgl_ke);
+
+                        txt_filter.setText(dayStart + "/" + (monthStart+1) + "/" + yearStart + " - " + dayEnd + "/" + (monthEnd+1) + "/" + yearEnd );
+
+                        linkFilter = Config.HOST+"filter.php?dari="+tgl_dari+"&ke="+tgl_ke;
+                        readQueryMySql();
+                    }
+                });
+
+        smoothDateRangePickerFragment.show(getFragmentManager(), "smoothDateRangePicker");
     }
 }
