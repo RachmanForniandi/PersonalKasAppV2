@@ -1,4 +1,4 @@
-package com.example.android.personalkasappv2;
+package com.example.android.personalkasappv2.activities;
 
 import android.app.DatePickerDialog;
 import android.database.Cursor;
@@ -19,6 +19,8 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.example.android.personalkasappv2.MainActivity;
+import com.example.android.personalkasappv2.R;
 import com.example.android.personalkasappv2.dbHelper.Config;
 import com.example.android.personalkasappv2.dbHelper.SqliteHelper;
 
@@ -29,16 +31,22 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Calendar;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class EditActivity extends AppCompatActivity {
 
     MainActivity M = new MainActivity();
 
-    RadioGroup radio_status;
-    RadioButton radio_income,radio_outcome;
-    EditText et_jumlah, et_keterangan;
+    @BindView(R.id.et_jumlah)EditText et_jumlah;
+    @BindView(R.id.et_keterangan)EditText et_keterangan;
+    @BindView(R.id.et_tanggal)EditText et_tanggal;
+    @BindView(R.id.radio_status) RadioGroup radio_status;
+    @BindView(R.id.radio_income) RadioButton radio_income;
+    @BindView(R.id.radio_outcome) RadioButton radio_outcome;
+
     RippleView rip_simpan;
 
-    EditText et_tanggal;
     DatePickerDialog datePickerDialog;
     String tanggal, status;
 
@@ -49,9 +57,10 @@ public class EditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
+        ButterKnife.bind(this);
 
         status =""; tanggal = ""; // input tanggal di SQLite YYYY-mm-dd
-        radio_status  =(RadioGroup)findViewById(R.id.radio_status);
+        /*radio_status  =(RadioGroup)findViewById(R.id.radio_status);
         radio_income  =(RadioButton)findViewById(R.id.radio_income);
         radio_outcome  =(RadioButton)findViewById(R.id.radio_outcome);
 
@@ -60,7 +69,7 @@ public class EditActivity extends AppCompatActivity {
         rip_simpan    =(RippleView) findViewById(R.id.rip_simpan);
 
         et_tanggal= (EditText)findViewById(R.id.et_tanggal);
-
+*/
         editOnMysql();
         //editOnSQLite();
         //set title

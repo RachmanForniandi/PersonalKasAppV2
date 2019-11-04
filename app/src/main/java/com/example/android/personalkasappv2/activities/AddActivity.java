@@ -1,6 +1,5 @@
-package com.example.android.personalkasappv2;
+package com.example.android.personalkasappv2.activities;
 
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -17,18 +16,23 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.example.android.personalkasappv2.R;
 import com.example.android.personalkasappv2.dbHelper.Config;
 import com.example.android.personalkasappv2.dbHelper.SqliteHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class AddActivity extends AppCompatActivity {
 
-    RadioGroup radio_status;
-    EditText et_jumlah, et_keterangan;
-    Button btn_simpan;
-    RippleView rip_simpan;
+    @BindView(R.id.radio_status) RadioGroup radio_status;
+    @BindView(R.id.et_jumlah)EditText et_jumlah;
+    @BindView(R.id.et_keterangan)EditText et_keterangan;
+    @BindView(R.id.btn_simpan)Button btn_simpan;
+    @BindView(R.id.rip_simpan)RippleView rip_simpan;
     String status;
     SqliteHelper sqliteHelper;
 
@@ -36,6 +40,7 @@ public class AddActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
+        ButterKnife.bind(this);
 
         status="";
         sqliteHelper= new SqliteHelper(this);

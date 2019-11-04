@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.android.personalkasappv2.AddActivity">
+    tools:context="com.example.android.personalkasappv2.activities.AddActivity">
 
     <ScrollView
         android:layout_width="match_parent"
