@@ -3,6 +3,11 @@ package com.example.android.personalkasappv2.activities;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +21,8 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
+import com.example.android.personalkasappv2.fragments.IncomeFragment;
+import com.example.android.personalkasappv2.fragments.OutcomeFragment;
 import com.example.android.personalkasappv2.R;
 import com.example.android.personalkasappv2.dbHelper.Config;
 import com.example.android.personalkasappv2.dbHelper.SqliteHelper;
@@ -45,11 +52,6 @@ public class AddActivity extends AppCompatActivity {
         status="";
         sqliteHelper= new SqliteHelper(this);
 
-        radio_status  =(RadioGroup)findViewById(R.id.radio_status);
-        et_jumlah     =(EditText) findViewById(R.id.et_jumlah);
-        et_keterangan =(EditText) findViewById(R.id.et_keterangan);
-        btn_simpan    =(Button) findViewById(R.id.btn_simpan);
-        rip_simpan    =(RippleView) findViewById(R.id.rip_simpan);
 
         radio_status.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -143,5 +145,62 @@ public class AddActivity extends AppCompatActivity {
         Toast.makeText(AddActivity.this, "Data transaksi berhasil disimpan",
                 Toast.LENGTH_LONG).show();
         finish();
+    }
+
+    public static class TabActivity extends AppCompatActivity {
+
+        private final String[] TITLE_PAGES = new String[]{"INCOME","OUTCOME"};
+
+        private final Fragment[] PAGES = new Fragment[]{new IncomeFragment(),
+                new OutcomeFragment()};
+
+        @BindView(R.id.tab_main)
+        TabLayout tab_main;
+
+        @BindView(R.id.view_pager_main)
+        ViewPager view_pager_main;
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_tab);
+            ButterKnife.bind(this);
+
+            view_pager_main.setAdapter(new PagerAdapter(getSupportFragmentManager()));
+            tab_main.setupWithViewPager(view_pager_main);
+
+
+            getSupportActionBar().setTitle("Tambah Baru");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        @Override
+        public boolean onSupportNavigateUp(){
+            finish();
+            return true;
+        }
+
+        private class PagerAdapter extends FragmentPagerAdapter {
+
+
+            public PagerAdapter(FragmentManager fragmentManager) {
+                super(fragmentManager);
+            }
+
+            @Override
+            public Fragment getItem(int position) {
+                return PAGES[position];
+            }
+
+            @Override
+            public int getCount() {
+                return PAGES.length;
+            }
+
+            @Override
+            public CharSequence getPageTitle(int position){
+                return TITLE_PAGES[position];
+            }
+        }
     }
 }

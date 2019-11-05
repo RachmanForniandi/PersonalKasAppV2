@@ -1,4 +1,4 @@
-package com.example.android.personalkasappv2;
+package com.example.android.personalkasappv2.activities;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -26,8 +26,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.example.android.personalkasappv2.activities.AddActivity;
-import com.example.android.personalkasappv2.activities.EditActivity;
+import com.example.android.personalkasappv2.R;
 import com.example.android.personalkasappv2.dbHelper.Config;
 import com.example.android.personalkasappv2.dbHelper.SqliteHelper;
 import com.leavjenn.smoothdaterangepicker.date.SmoothDateRangePickerFragment;
@@ -74,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
+        startActivity(new Intent(MainActivity.this,IntroSlide.class));
+
         transaksi_id = ""; tgl_dari=""; tgl_ke="";
         filter = false;
 
@@ -103,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //intent ke AddActivity dgn bentuk lain
-                startActivity(new Intent(MainActivity.this, TabActivity.class));
+                startActivity(new Intent(MainActivity.this, AddActivity.TabActivity.class));
 
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
