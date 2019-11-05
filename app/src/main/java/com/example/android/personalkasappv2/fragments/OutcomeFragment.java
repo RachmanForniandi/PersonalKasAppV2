@@ -1,4 +1,4 @@
-package com.example.android.personalkasappv2;
+package com.example.android.personalkasappv2.fragments;
 
 
 import android.database.sqlite.SQLiteDatabase;
@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -16,7 +15,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.example.android.personalkasappv2.activities.AddActivity;
+import com.example.android.personalkasappv2.R;
 import com.example.android.personalkasappv2.dbHelper.Config;
 import com.example.android.personalkasappv2.dbHelper.SqliteHelper;
 
@@ -30,15 +29,16 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class IncomeFragment extends Fragment {
-    @BindView(R.id.et_jumlah_in) EditText et_jumlah_in;
-    @BindView(R.id.et_keterangan_in)EditText et_keterangan_in;
-    @BindView(R.id.rip_simpan_in) RippleView rip_simpan_in;
+public class OutcomeFragment extends Fragment {
+
+    @BindView(R.id.et_jumlah_out) EditText et_jumlah_out;
+    @BindView(R.id.et_keterangan_out)EditText et_keterangan_out;
+    @BindView(R.id.rip_simpan_out) RippleView rip_simpan_out;
 
     SqliteHelper sqliteHelper;
 
 
-    public IncomeFragment() {
+    public OutcomeFragment() {
         // Required empty public constructor
     }
 
@@ -47,14 +47,14 @@ public class IncomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =inflater.inflate(R.layout.fragment_income, container, false);
+        View view = inflater.inflate(R.layout.fragment_outcome, container, false);
         ButterKnife.bind(this,view);
         sqliteHelper= new SqliteHelper(getActivity());
 
-        rip_simpan_in.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
+        rip_simpan_out.setOnRippleCompleteListener(new RippleView.OnRippleCompleteListener() {
             @Override
             public void onComplete(RippleView rippleView) {
-                if(et_jumlah_in.getText().toString().equals("") || et_keterangan_in.getText().toString().equals("")){
+                if(et_jumlah_out.getText().toString().equals("") || et_keterangan_out.getText().toString().equals("")){
                     Toast.makeText(getActivity(), "Isi data dengan benar",
                             Toast.LENGTH_LONG).show();
                 }else{
@@ -64,15 +64,16 @@ public class IncomeFragment extends Fragment {
                 }
             }
         });
+
+
         return view;
     }
 
-
     private void queryMysql(){
         AndroidNetworking.post(Config.HOST+"create.php")
-                .addBodyParameter("status", "MASUK")
-                .addBodyParameter("jumlah", et_jumlah_in.getText().toString())
-                .addBodyParameter("keterangan", et_keterangan_in.getText().toString())
+                .addBodyParameter("status", "KELUAR")
+                .addBodyParameter("jumlah", et_jumlah_out.getText().toString())
+                .addBodyParameter("keterangan", et_keterangan_out.getText().toString())
                 .setPriority(Priority.MEDIUM)
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
@@ -104,11 +105,10 @@ public class IncomeFragment extends Fragment {
         SQLiteDatabase database = sqliteHelper.getWritableDatabase();
         database.execSQL(
                 "INSERT INTO transaksi(status, jumlah, keterangan) VALUES('" + "MASUK" +
-                        "','"+ et_jumlah_in.getText().toString() + "','" + et_keterangan_in.getText().toString() + "')"
+                        "','"+ et_jumlah_out.getText().toString() + "','" + et_keterangan_out.getText().toString() + "')"
         );
         Toast.makeText(getActivity(), "Data transaksi berhasil disimpan",
                 Toast.LENGTH_LONG).show();
         getActivity().finish();
     }
-
 }

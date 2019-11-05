@@ -32,6 +32,7 @@ dependencies {
     implementation 'com.amitshekhar.android:android-networking:1.0.1'
     implementation 'com.leavjenn.smoothdaterangepicker:library:0.2.0'
     implementation 'com.jakewharton:butterknife:8.8.1'
+    implementation 'com.github.apl-devs:appintro:v4.2.2'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     testImplementation 'junit:junit:4.12'
 }

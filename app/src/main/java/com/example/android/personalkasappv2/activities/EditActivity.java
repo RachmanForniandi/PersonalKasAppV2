@@ -19,7 +19,6 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.example.android.personalkasappv2.MainActivity;
 import com.example.android.personalkasappv2.R;
 import com.example.android.personalkasappv2.dbHelper.Config;
 import com.example.android.personalkasappv2.dbHelper.SqliteHelper;
@@ -60,16 +59,7 @@ public class EditActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         status =""; tanggal = ""; // input tanggal di SQLite YYYY-mm-dd
-        /*radio_status  =(RadioGroup)findViewById(R.id.radio_status);
-        radio_income  =(RadioButton)findViewById(R.id.radio_income);
-        radio_outcome  =(RadioButton)findViewById(R.id.radio_outcome);
 
-        et_jumlah     =(EditText) findViewById(R.id.et_jumlah);
-        et_keterangan =(EditText) findViewById(R.id.et_keterangan);
-        rip_simpan    =(RippleView) findViewById(R.id.rip_simpan);
-
-        et_tanggal= (EditText)findViewById(R.id.et_tanggal);
-*/
         editOnMysql();
         //editOnSQLite();
         //set title

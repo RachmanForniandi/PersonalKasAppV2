@@ -9,7 +9,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.andexert.library.RippleView;
-import com.example.android.personalkasappv2.MainActivity;
 import com.example.android.personalkasappv2.R;
 
 import java.text.DecimalFormat;
@@ -39,9 +38,6 @@ public class FilterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_filter);
         ButterKnife.bind(this);
 
-        et_from = (EditText)findViewById(R.id.et_from);
-        et_to = (EditText)findViewById(R.id.et_to);
-        rip_simpan =(RippleView)findViewById(R.id.rip_simpan);
 
 
 
