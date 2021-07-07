@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_below="@+id/view"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:text="0"
                 android:textSize="16dp"
                 android:textStyle="bold"/>
@@ -88,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_below="@+id/txt_saldo_main"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:text="SEMUA"
                 android:textAlignment="center"/>
         </RelativeLayout>
